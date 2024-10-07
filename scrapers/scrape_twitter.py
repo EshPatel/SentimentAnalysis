@@ -48,15 +48,15 @@ async def scrape_tweets(client, search_query, tweet_limit, current_dir):
             tweet_count += 1
             
             with open(os.path.join(current_dir, 'csv_outputs/tweets.csv'), mode='w', newline='', encoding='utf-8') as csvfile:
-                fieldnames = ['Tweet Count', 'Username', 'Text', 'Created At', 'Retweets', 'Likes']
+                fieldnames = ['Tweet Count', 'Username', 'Created At', 'Text', 'Retweets', 'Likes']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
 
                 writer.writerow({
                     "Tweet Count": tweet_count,
                     "Username": tweet.user.name,
-                    "Text": tweet.text,
                     "Created At": tweet.created_at,
+                    "Text": tweet.text,
                     "Retweets": tweet.retweet_count,
                     "Likes": tweet.favorite_count
                 })

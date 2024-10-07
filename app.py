@@ -10,7 +10,7 @@ app = FastAPI()
 
 # Request body models
 class YouTubeRequest(BaseModel):
-    video_id: str
+    search_query: str
 
 class InstagramRequest(BaseModel):
     search_query: str
@@ -24,13 +24,13 @@ class RedditRequest(BaseModel):
 # Routes
 @app.post('/scrape/youtube')
 async def scrape_youtube(request: YouTubeRequest):
-    video_id = request.video_id
-    if not video_id:
-        raise HTTPException(status_code=400, detail="Missing video_id")
+    search_query = request.search_query
+    if not search_query:
+        raise HTTPException(status_code=400, detail="Missing Yotube search query")
 
     factory = YouTubeScraperFactory()
     scraper = factory.create_scraper()
-    result = scraper.scrape(video_id)
+    result = scraper.scrape(search_query)
     return {"result": result}
 
 @app.post('/scrape/instagram')
