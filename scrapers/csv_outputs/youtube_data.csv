@@ -1,20 +1,105 @@
-Video Name,394. Decode String
-Description,"#leetcodesolutions 
-Videolarimin basini bir turlu kaydedemiyorum ahahaha iyi aksamlar herkese diyorum baslarda
-Bence kaliteli bir soru ve tatli bir cozum oldu 
-while(true){syout(""iyi calismalar!"");}
-Bir de videoyu begendiyseniz begenir misiniz
-Videolari ingilizce mi yapsam sizce ?
- #LeetCodeSolutions #CodingChallenges
-#LeetCode, #LeetCodeSolutions, #CodingChallenges, #Programming, #Algorithms, #DataStructures, #InterviewPreparation, #CodingInterviews  #TechInterview  #DynamicProgramming, #Backtracking, #Recursion, #TreeTraversal, #GraphAlgorithms, #BinarySearch, #SortingAlgorithms, #LinkedList #LearnToCode, #CodingTutorials, #ProgrammingForBeginners #CodeWithMe, #DeveloperCommunity, #Motivation v#DailyCoding#TechYouTuber, #SoftwareEngineering#CodingLifestyle #problemsolvingfun #stack #stackqueue#queue #queues#Yığın #Kuyruk #VeriYapıları #StackAlgoritmaları #QueueAlgoritmaları #YığınNedir #KuyrukNedir #YığınUygulamaları #KuyrukUygulamaları #YığınVeriYapısı #KuyrukVeriYapısı #StackVsQueue #YığınÖrnekleri #KuyrukÖrnekleri #VeriYapısıÇözümleri #YığınVeKuyrukFarkları #VeriYapılarıDersi #AlgoritmaVeVeriYapıları #ProgramlamaTemelleri #YığınKullanımı #KuyrukKullanımı #BilgisayarBilimi #YığınVeKuyrukİşlemleri #LIFO #FIFO #YığınKuyrukAlgoritmalar#Stack #Queue #DataStructures #StackAlgorithms #QueueAlgorithms #WhatIsStack #WhatIsQueue #StackApplications #QueueApplications #StackDataStructure #QueueDataStructure #StackVsQueue #StackExamples #QueueExamples #DataStructureSolutions #StackAndQueueDifference#DataStructures #Algorithms #DSA #Programming #Coding #InterviewPrep #SoftwareEngineering #TechInterview #LeetCode #CodeChallenges #ProblemSolving #BigO #Recursion #DynamicProgramming #GraphTheory #TreeTraversal #SortingAlgorithms #LinkedLists #BinarySearch #Stack #Queue #Array #HashTable #PriorityQueue #BinaryTree #GraphTraversal #Backtracking #GreedyAlgorithms #DivideAndConquer #SlidingWindow #TwoPointers #Trie #BitManipulation #Heaps #Graphs #Sets #StringManipulation #DynamicArrays #RecursionProblems #PathFinding #BreadthFirstSearch #DepthFirstSearch #MergeSort #QuickSort #BubbleSort #SelectionSort #InsertionSort #RadixSort #CountingSort #KMPAlgorithm #Knapsack #LongestCommonSubsequence #ShortestPath #BellmanFord #Dijkstra #Prim #Kruskal #MinimumSpanningTree #GraphProblems #TreeProblems #FloydWarshall #BinarySearchTree #HeapSort #DisjointSet #SegmentTree #AVLTree #FenwickTree #SplayTree #UnionFind #TopologicalSort #Matrix"
-Creator,Deniz Yıldırım
+Video Name,Rafet El Roman - Direniyorum
+Description,Rafet El Roman - Direniyorum
+Creator,netd müzik
 
 Comment Number,Comment Author,Comment Text
-1,@unlucky-777,"import re<br>class Solution:<br>    def decodeString(self, s: str) -&gt; str:<br>        regex_pattern= re.compile(r&#39;(\d+)\[([a-zA-Z]*)\]&#39;)<br>        <br>        while &#39;[&#39; in s:<br>            s = re.sub(regex_pattern, lambda x: int(x.group(1)) * x.group(2), s)<br>        <br>        return s"
-2,@ProGamerTRHD,klavye sesi çok geliyor
-3,@EfeSecular,Kanalı iyiki keşfetmisim izledikce yalnız olmadıgımı anladım kafayı kırdım kod hatalarından başarılar 😇
-4,@yigitsssss963,güzel çözüm
-5,@lreaxx,merhabalar videonuzu izledim gayet iyi bir kodlama yeteneğiniz ve anlatım sekliniz var hayran kaldım başarılarının devamını dilerim
-6,@celalpenguin963,"iyi günler<br> class Solution(object):<br>    def decodeString(self, s):<br>        &quot;&quot;&quot;<br>        :type s: str<br>        :rtype: str<br>        &quot;&quot;&quot;<br>        stack=[] <br>        for curr in s:<br>            if curr==&#39;]&#39;:<br>                sub=[] <br>                while stack[-1]!=&#39;[&#39;:<br>                    sub.insert(0,stack.pop())<br>                stack.pop()<br>                count=[] <br>                while stack and stack[-1].isdigit():<br>                    count.append(stack.pop())<br>                count=int(&#39;&#39;.join(count[::-1]))<br>                stack.extend(sub*count) <br>            else:<br>                stack.append(curr)<br>        return &#39;&#39;.join(stack)<br>            <br><br>                 ben böyle bir  çözüm yaptım"
-7,@dejong435,uyuyamadim
-8,@bilalinci4981,Çözümü izlemeden yazıyorum. Bence recursive ile rahat çözülebilir bir soru. Deneyeceğim.
+1,@deniz2938,04.10.2024
+2,@AyselSherifzade,2024 hala dinliyorum
+3,@ПеризатРыспаева-з8х,2024❤
+4,@ElmurodovaDilyora-w2q,Yigʻlab yuboraman eshitib 😢💔😔😔 juda qattiq sevaman lekin...
+5,@durdaneozden9746,Rafetin en sevdiyim Musik  <br>Diyemiyorum aşırı beyendim ❤
+6,@tolikhallyyew260,Bu en beğendim sarkicilarimin biri😊
+7,@tolikhallyyew260,Bande varim👍
+8,@DemetAk-gt1mn,Dinliyorum 2024❤😂🎉🎉🎉🎉
+9,@tunzalanielsen,2024❤😢
+10,@kuskun_,2024❤
+11,@haticebasdil9289,Bende burdayımmmm
+12,@parizodamuxuddinova,2024.19 август
+13,@ШохратКеримов,2024 из Туркмении
+14,@Musso18-h5r,"Yabancı bir ülkede , arabamızda sadece bu şarkı ve &quot;Yalançı  şahidim&quot;vardı kasetde uzun yol boyunca bıkmadan dinlerdik. En- en güzel günlerimin  şahidi . Şimdi o günlerimi hayalimde de yaşatmak için gelip dinliyorum ❤.Bu şarkıyı o ülkeye ve oradakı mutlu günlerime hitap ediyorum ve gönderiyorum. Sözleri tam da ona uyğun ❤"
+15,@MemmedovaNigar-uv9yk,💔😥💔🏹💔😥💔
+16,@sanjarbekakbarov9752,Кто слишу из 2024 ґоду
+17,@ozoda26,2030 hala dinleyen varmı?😅😅
+18,@dadasizdanjannatqarzimbor8434,2024 yilda birinchi eshitib Nilufarni qòshiqini eslaganlar qalban birgamiz😂😂😂
+19,@tevfikdenizli5885,"18.07,24 uzbek kardeş ulkeden saygilar"
+20,@no1283-c8y,Şimdi hayat sen giderken...........
+21,@TayyibAslan,Bu kader kaliteli bir eserin 4 milyon dinlenmesi ne kadar kötü…
+22,@shoxruxxolmatov2063,2024 dinleyan vardmi
+23,@ismayilxankiwiyev2315,😔
+24,@acarfunda,2 temmuz 2024 halâ severek dinliyorum
+25,@РамалГусейнов-у5б,😴
+26,@vuqarseferov5824,2024 😢
+27,@yakupyldrm4693,Bir ihtimal güllüsah belki bunu okursun seni seviyorum 🌹
+28,@damlasarikaya3089,❤❤
+29,@doradogan26,Yıl 2024&#39;ün haziran ayının 19&#39;u var mı hala buralarda alfalar 😂
+30,@yulduzismoilova214,2024 yil boʻlsa ham yoqimli bu qoʻshiq ❤
+31,@GunelTagyeva-tl9jl,2024 🎵👍
+32,@GamzeLacn-yg2wz,😊🎉😂❤
+33,@canerofw,Direniyorum Acılarınlaa…
+34,@yasinayhan207,"Sessiz bir mecra, şimdi hayat<br>Sen giderken<br>Soğuktan da soğuk<br>Dondu yüreğim, durdu yaşam<br><br>Savaş sonrası gibi<br>Kalbimin içi, kan ve revan<br>Büyür gitgide inan<br>Yokluğun azap, yeryüzünde<br><br>Günahlarımla boyanmış<br>Bir hayat var, kalan geriye<br>Gözyaşlarıyla yazılmış<br>Her satır, sözlerimde<br><br>Direniyorum acılarına yine dünya<br>Yalanmış aşkların da<br>İnadına yaşıyorum ama sorma<br>Kıyamet ortasında"
+35,@jaxongirmamasaitov9842,Rafet el Romanni Oʻzbekistondan muxlislari bormi
+36,@musamusal,2024 ve hala dinleyen binlerce adamlar var
+37,@tahirqurbanov,🫶🫶
+38,@familmustafayev5289,2024de dinleyenler vamı?
+39,@MuhabbatRaxmatovna,2024.22 май город Мурманск
+40,@aliyusuferimhan3775,&quot;İnadına yaşıyorum ama sorma&quot;
+41,@Otabek400,2026 dinleyen kaç kişiyiz
+42,@kamranpoladov1791,F dirəndim
+43,@lxlnn06,"<a href=""https://www.youtube.com/watch?v=S4_bc5hR6OM&amp;t=156"">2:36</a> 🥀"
+44,@yunuscekici8367,Ne 2020si 2024 hala devam 🔥
+45,@fazlyavuz6781,Hepsi benim hatam
+46,@oguzhanturan5394,Ben 1992 doğumluyum. Küçükken dinlerdim severek. Hala dinliyorum. Bir de şimdili şarkıcılara bakın. Çok fark var :)
+47,@lilervtm467,"Öyle yer edinmiş ki klipler beynime, Venedik bu klipten güzel gelmiş, bana çocukluğumdaki yalnızlığı onun gemide yalnız süzülmesi ile beraber, sözleriyle teselli etmiş. Kızın gözleri kapalı dans edişi, o gemide birlikte adeta dünyada yalnız onlar varmışcasına iz bıraktı. Şimdi istesem de başka bir şey umamıyorum gönlüme."
+48,@ardakreb,Ne bu şarkı eskir ne de bazı aşklar...
+49,@akmalyuldashev3569,2024  dinlayan varmi
+50,@IoD31,2025 hala dinleyen kaç kişiyiz?
+51,@blackstar4571,2024 кто слушает это музыку 🎉🎉🎉🎉
+52,@prodigyg1b186,Yanlış zamanda gelen doğru sanatçı
+53,@kubilaykenan,KONINDEN SELAMLAEERRRRRRRR DZİEN DOBRY TURKİYAAAA 😭😭😭 BUBSARKİYİ KUCUKKEN DİNELRDİM HALEN DİNLİYORUMMMMM 😫🥹🥲🥲🥲😭😭
+54,@trlanrustmov6212,Men
+55,@gurkanbey0,"Küçükken televizyonda çıktığında dinlerdim. Tabi o zamanlar anlamazdım. Yaş aldıkça, bazı şeyleri yaşadıkça sözler anlamlı gelmeye başlıyor. Direniyorum acılarına yine dünya... 😓"
+56,@akgulyldrm2950,Ben 20 yaş  dan  beri  dinliyorum  şimdi  48  yaşında yim devam
+57,@erengunay5674,Şu şarkıyı hissederek dinlemek hiç istemezdim
+58,@lloveseeker,Bir şarkı bu kadar acitmamali
+59,@Kalif-s2w,10 yıl önce dinlemiştim. Beni eskilere götürdü.
+60,@НигорахонИсматуллаева,Banda dinleyurem
+61,@Salih-y3t,2024 var mı hala dinleyen
+62,@lewisparker1026,a
+63,@Elifernando_,Ahh ❤
+64,@Gibigibiydi,Lan bu ne biçim klip 😂 hiç bişey anlamadım şarkı iyi&gt;
+65,@AKBARJONSAIDOV,"Nechta talqin va coverlari bor bu qo‘shiqni, lekin asl baribir ASL, hech eskirmaydi❤"
+66,@myworldgokcem,Hala dinleyenler varmı?❤🥺
+67,@kadirerkurt4402,😢😭🥀💔.  Enes
+68,@mustafasireci7430,2024 hala DinLeyenLeR ??
+69,@neeerrgiz4944,3 mart imtahandı direniyorum acılarına yine dünyaaaaaağ
+70,@lyamana.4503,2024?
+71,@martineden3861,"Bana eski güzel yaz günlerini, sahili, denizi, güneşi, huzuru anımsatan şarkısı."
+72,@ercankaya468,2024 HALA DİNLİYORUM
+73,@azizcafarov6287,"21.02.2024  <a href=""https://www.youtube.com/watch?v=S4_bc5hR6OM&amp;t=1261"">21:01</a> 💔"
+74,@thenextworld3858,🇺🇿🇹🇷
+75,@thenextworld3858,2024🇺🇿🇺🇿🇺🇿🇺🇿🇺🇿🇺🇿🇺🇿🇺🇿🇺🇿
+76,@strong-s,2024 gerçek aşklara
+77,@farukgungormez7742,"14 Şubat 2024 kimler burada 😮 <a href=""https://www.youtube.com/watch?v=S4_bc5hR6OM&amp;t=7"">0:07</a>"
+78,@marimarimova6537,Var
+79,@Bugzzii,2024 Halen
+80,@tomato9929,3 900 000
+81,@johnreesee,Sessiz bir mecra<br>şimdi hayat sen giderken
+82,@batuhanbatuk3290,"Yıl olmuş 2024 hala dinliyorum gözlerim doluyor 😢😢😢 hala ❤❤ <a href=""https://www.youtube.com/watch?v=S4_bc5hR6OM&amp;t=56"">0:56</a>"
+83,@Bezbebek431,Yalan yok reelslerde duydum. Ama dinleyince anaaa dedim
+84,@emrahgebes-u6i,Kral
+85,@Sibel_aslan,Yalanmış aşklarında İnadına yaşıyorum ama sorma 🥀11.02.2024
+86,@artpesnizm,şu şarkıyı uzun yıllardır dinlememiştim yine hortlattılar beraberinde acılarımı
+87,@ramazanmnsimzad6737,"Sessiz bir mecra şimdi hayat<br>Sen giderken soğuktan da soğuk<br>Dondu yüreğim, durdu vasam<br>Savaş sonrası gibi kalbimin ici<br>Kan ve revan<br>Büyür git gide inan yokluğun azap<br>Yeryüzünde günahlarımla boyanmıis<br>Bir hayat var kalan geriye<br>Gözyaşlarıyla yazılmış her satır sözlerimde<br>Direniyorum acilarına yine dünya<br>Yalanmış aşkların da<br>Inadına yaşıyorum ama sorma<br>Kıyamet ortasında<br>Direniyorum acılarna yine dünya<br>Yalanmış aşkların da<br>Inadına yaşıyorum ama sorme<br>Kıyamet ortasında<br>Savaş sonrası gibi kalbimin içi<br>Kan ve revan<br>Büyür git gide inan yokluğun azap<br>Yeryüzünde günahlarımla boyanmış<br>Bir hayat var kalan geriye<br>Gözyaslaryla yazilmış her satr sözlerimde<br>Direniyorum acilarna yine dünya<br>Yalanmış aşkların da<br>Inadına yaşıyorum ama sorma<br>Kyamet ortasında<br>Direniyorum acılarına yine dünya<br>Yalanmış aşkların da<br>Inadına yaşıyorum ama sorma<br>Kıyamet ortasında"
+88,@kurtulusgun257,8 şubat 2024 perşembe dinliyorum
+89,@shendelsaskaloz5908,2025 dinleyen kaç kişiyiz??
+90,@elnurcabbarov2237,"Heç vaxt inanmazdımki, bu cürə bir müğənni üzünü-gözünü 180 dərəcə dəyişdirib tanınmaz bir hala düşəcək. Rafet&#39;in mahnıları yaşayacaq, amma Rafet əvvəlki Rafet El Roman deyil. 😔"
+91,@ersinbaltaci3037,Bir zamanlar oradaydım ardan 10 sene geçti hey gidi günler
+92,@elserpiente12,14 taşındayım öyle büyük değilim ama anlamsızca 5 yaşında çok severdim bu şarkıyı :D
+93,@aytenxelefli4811,2024
+94,@makbuleaydogdu9885,1 şubat 2024
+95,@UrCristianoHD,"Bu şarkıyı paylaşacagim , beraber dinleyeceğim, 2013 de İlk dinlediğimde de sevgilim yoktu şimdi de ..."
+96,@90larkarskozdemir60,2011-12 yılı askerdeyken aracta radyo frekanslarını gezerek bulmaya çalışırdım teknoloji ona göre öyle açıp dinleyemiyorsun her zaman bide askerlik cabası imkanlar kısıtlı belkide zor ulaşmak güzel yapıyordu herseyi. Tv de gözlerimde umutla baktığım beklediğim şarkılar çizgi filmler... Bu şarkı<br>tarkan dudu<br> mustafa sandal isyankar ..<br>İsmail YK sapur şupur 😂😂😂 <br>Ve daha niceleri
+97,@yasifsahhuseynov7142,2024
+98,@tomato9929,3 830 000
+99,@umrbekqwerty6453,❤❤
+100,@91.-eshabil,2024 ne 2020 si 😂

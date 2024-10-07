@@ -78,7 +78,7 @@ async def twitter_scrape(search_query):
 
     # login twitter
     client = Client(language='tur')
-    if os.path.exists('cookies.json'):
+    if os.path.exists(os.path.join(current_dir, 'cookies.json')):
         client.load_cookies(os.path.join(current_dir, 'cookies.json'))
         print("cookies.json file succesfully loaded")
     else:
