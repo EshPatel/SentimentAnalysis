@@ -1,4 +1,4 @@
-### Social Media Scraper
+### **Social Media Scraper**
 This project is a set of social media scrapers for platforms like YouTube, Twitter, Instagram, and Reddit, built using FastAPI. The project follows the abstract factory design pattern and uses asynchronous functions for efficient scraping.
 
 
