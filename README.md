@@ -33,7 +33,7 @@ pip install -r requirements.txt
 
 Start the FastAPI server using uvicorn:
 
-uvicorn main:app --reload
+uvicorn app:app --reload
 
 
 ## Postman Usage
