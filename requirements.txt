@@ -1,0 +1,9 @@
+instaloader
+twikit
+praw
+google-api-python-client
+fastapi
+uvicorn
+pydantic
+configparser
+pandas
