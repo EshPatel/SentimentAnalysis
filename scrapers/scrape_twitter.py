@@ -78,10 +78,14 @@ async def twitter_scrape(search_query):
 
     # login twitter
     client = Client(language='tur')
-    await client.login(auth_info_1=username, auth_info_2=email, password=password)
-    client.save_cookies(os.path.join(current_dir, 'cookies.json'))
-    client.load_cookies(os.path.join(current_dir, 'cookies.json'))
-
+    if os.path.exists('cookies.json'):
+        client.load_cookies(os.path.join(current_dir, 'cookies.json'))
+        print("cookies.json file succesfully loaded")
+    else:
+        await client.login(auth_info_1=username, auth_info_2=email, password=password)
+        client.save_cookies(os.path.join(current_dir, 'cookies.json'))
+        print("login sucessfull and cookies.json file saved")
+    
     # scrape tweets
     await scrape_tweets(client, search_query, limit, current_dir)
 
