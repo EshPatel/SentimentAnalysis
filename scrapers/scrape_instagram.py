@@ -80,7 +80,7 @@ def get_posts_and_comments(profile_name, loader, post_limit, comment_limit, curr
 
 
 def instagram_scrape(search_query):
-    # Get the current file's directory
+    # get the current file's directory
     current_dir = os.path.dirname(os.path.abspath(__file__))
     # getting credentials from config file
     config = ConfigParser()

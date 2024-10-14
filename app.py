@@ -5,6 +5,7 @@ from factories.youtube_factory import YouTubeScraperFactory
 from factories.twitter_factory import TwitterScraperFactory
 from factories.instagram_factory import InstagramScraperFactory
 from factories.reddit_factory import RedditScraperFactory
+from factories.sikayetvar_factory import SikayetVarScraperFactory
 
 app = FastAPI()
 
@@ -20,6 +21,9 @@ class TwitterRequest(BaseModel):
 
 class RedditRequest(BaseModel):
     search_query: str
+
+class SikayetVarRequest(BaseModel):
+    search_query: str    
 
 # Routes
 @app.post('/scrape/youtube')
@@ -64,6 +68,17 @@ async def scrape_reddit(request: RedditRequest):
     factory = RedditScraperFactory()
     scraper = factory.create_scraper()
     result = scraper.scrape(search_query)
+    return {"message": result}
+
+@app.post('/scrape/sikayetvar')
+async def scrape_sikayetvar(request: SikayetVarRequest):
+    search_query = request.search_query
+    if not search_query:
+        raise HTTPException(status_code=400, detail="Missing Sikayet Var search query")
+
+    factory = SikayetVarScraperFactory()
+    scraper = factory.create_scraper()
+    result = await scraper.scrape(search_query)
     return {"message": result}
 
 if __name__ == "__main__":
