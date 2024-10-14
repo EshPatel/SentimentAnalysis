@@ -26,39 +26,42 @@ async def scrape_tweets(client, search_query, tweet_limit, current_dir):
     tweet_count = 0
     tweets = None
 
-    # scraping the specified number of tweets
-    while tweet_count < tweet_limit:
-        try:
-            tweets = await get_tweets(tweets, search_query, client)
-        except TooManyRequests as e:
-            # is scraping operation come across rate limit it sleeps for a while to prevent from banning
-            rate_limit_reset = datetime.fromtimestamp(e.rate_limit_reset)
-            print(f"{datetime.now()} - Rate limit reached. Waiting until {rate_limit_reset}")
-            wait_time = rate_limit_reset - datetime.now()
-            await asyncio.sleep(wait_time.total_seconds())
-            continue
+    # creating csv file and saving tweet data to csv file
+    with open(os.path.join(current_dir, 'csv_outputs/tweets.csv'), mode='w', newline='', encoding='utf-8') as csvfile:
+        fieldnames = ['Post Number', 'Platform', 'Username', 'Content URL', 'Text', 'Creation Date', 'Likes', 'Comments', 'Additional Info']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
 
-        # if program couldnt find tweet or more tweets according to query it returns message
-        if not tweets:
-            print(f"{datetime.now()} - No more tweets found.")
-            break
+        # scraping the specified number of tweets
+        while tweet_count < tweet_limit:
+            try:
+                tweets = await get_tweets(tweets, search_query, client)
+            except TooManyRequests as e:
+                # is scraping operation come across rate limit it sleeps for a while to prevent from banning
+                rate_limit_reset = datetime.fromtimestamp(e.rate_limit_reset)
+                print(f"{datetime.now()} - Rate limit reached. Waiting until {rate_limit_reset}")
+                wait_time = rate_limit_reset - datetime.now()
+                await asyncio.sleep(wait_time.total_seconds())
+                continue
 
-        # creating csv file and saving tweet data to csv file
-        for tweet in tweets:
-            tweet_count += 1
-            
-            with open(os.path.join(current_dir, 'csv_outputs/tweets.csv'), mode='w', newline='', encoding='utf-8') as csvfile:
-                fieldnames = ['Tweet Count', 'Username', 'Created At', 'Text', 'Retweets', 'Likes']
-                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-                writer.writeheader()
+            # if program couldnt find tweet or more tweets according to query it returns message
+            if not tweets:
+                print(f"{datetime.now()} - No more tweets found.")
+                break
+
+            for tweet in tweets:
+                tweet_count += 1
 
                 writer.writerow({
-                    "Tweet Count": tweet_count,
+                    "Post Number": tweet_count,
+                    "Platform": "Twitter",
                     "Username": tweet.user.name,
-                    "Created At": tweet.created_at,
+                    "Content URL": 'N/A',  # Twitter doesn't provide direct URLs
                     "Text": tweet.text,
-                    "Retweets": tweet.retweet_count,
-                    "Likes": tweet.favorite_count
+                    "Creation Date": tweet.created_at,
+                    "Likes": tweet.favorite_count,
+                    "Comments": 'N/A',
+                    "Additional Info": f"Retweets: {tweet.retweet_count}"
                 })
 
         print(f"{datetime.now()} - Got {tweet_count} tweets!") 

@@ -43,7 +43,7 @@ def get_posts_and_comments(profile_name, loader, post_limit, comment_limit, curr
 
     # get post data and write on created csv file
     with open(os.path.join(current_dir, 'csv_outputs/instagram_posts.csv'), mode='w', newline='', encoding='utf-8') as csvfile:
-        fieldnames = ['Count', 'Username', 'Post URL', 'Caption', 'Post Date', 'Likes', 'Comments']
+        fieldnames = ['Post Number', 'Platform', 'Username', 'Content URL', 'Text', 'Creation Date', 'Additional Info']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -62,12 +62,17 @@ def get_posts_and_comments(profile_name, loader, post_limit, comment_limit, curr
                 print(f"To prevent rate limit program waits {sleep_time} seconds")
 
             # write the row with post details
+            # Write the row with standardized column names
             writer.writerow({
-                "Count": post_count,
+                "Post Number": post_count,
+                "Platform": "Instagram",
                 "Username": profile.username,
-                "Post URL": f'https://www.instagram.com/p/{post.shortcode}/', 
-                "Caption": post.caption.replace('\n', ' ') if post.caption else 'No caption',
-                "Post Date": post.date_utc.strftime('%Y-%m-%d %H:%M:%S'),
+                "Content URL": f'https://www.instagram.com/p/{post.shortcode}/',
+                "Text": post.caption.replace('\n', ' ') if post.caption else 'No caption',
+                "Creation Date": post.date_utc.strftime('%Y-%m-%d %H:%M:%S'),
+                #"Likes": post.likes,
+                #"Comments": post.comments,
+                "Additional Info": "N/A"
             })
 
             # Optionally, fetch and write comments separately
@@ -89,12 +94,15 @@ def instagram_scrape(search_query):
 
     # login instagram
     loader = instaloader.Instaloader()
-    loader.login(username, password)
-    print("Login succesfull")
-    loader.save_session_to_file()
-    loader.load_session_from_file(username)
-    print("Previous session loaded succesfully")
-
+    if os.path.exists(os.path.join(current_dir, f'{username}_session')):
+        loader.load_session_from_file(username)
+        print("Previous session loaded succesfully")
+    else:
+        loader.login(username, password)
+        print("Login succesfull")
+        loader.save_session_to_file(os.path.join(current_dir, f'{username}_session'))
+        print("login sucessfull and session file saved")
+    
     try:
         get_posts_and_comments(search_query, loader, p_limit, c_limit, current_dir)
     except (instaloader.exceptions.TooManyRequestsException,

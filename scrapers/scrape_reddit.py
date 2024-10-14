@@ -2,6 +2,16 @@ import os
 import praw
 import csv
 from configparser import ConfigParser
+from datetime import datetime
+
+def convert_unix_to_date(timestamp):
+    # Convert the timestamp to a datetime object
+    date_obj = datetime.utcfromtimestamp(timestamp)
+    
+    # Format the datetime object as a string
+    formatted_date = date_obj.strftime('%a %b %d %H:%M:%S +0000 %Y')
+    
+    return formatted_date
 
 def reddit_scrape(search_query):
     # Get the current file's directory
@@ -32,20 +42,21 @@ def reddit_scrape(search_query):
 
     # saving scraped posts data to csv file
     with open(os.path.join(current_dir, 'csv_outputs/reddit_posts.csv'), mode='w', newline='', encoding='utf-8') as csvfile:
-        fieldnames = ['Count', 'Title', 'ID', 'Author', 'URL', 'Score', 'Comment count', 'Created']
+        fieldnames = ['Post Number', 'Platform', 'Username', 'Content URL', 'Text', 'Creation Date', 'Likes', 'Comments', 'Additional Info']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
         for i, post in enumerate(new_posts):
             writer.writerow({
-                "Count": i + 1,
-                "Title": post.title,
-                "ID": post.id,
-                "Author": post.author,
-                "URL": post.url,
-                "Score": post.score,
-                "Comment count": post.num_comments,
-                "Created": post.created_utc
+                "Post Number": i + 1,
+                "Platform": "Reddit",
+                "Username": post.author,
+                "Content URL": post.url,
+                "Text": post.title,
+                "Creation Date": convert_unix_to_date(post.created_utc),
+                "Likes": post.score,
+                "Comments": post.num_comments,
+                "Additional Info": f"ID: {post.id}"
             })
 
     return "Reddit data scraped and saved to CSV"
