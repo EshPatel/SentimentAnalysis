@@ -55,6 +55,10 @@ def sikayetvar_scrape(search_query):
         while complaint_limit > complaint_count:
             # update url for pagination
             if page_num >= 2:
+                # Sleep to avoid blocks
+                sleep_time = randint(5, 10)
+                print(f"[[ Program sleeps for {sleep_time} seconds to avoid blocks ]]")
+                sleep(sleep_time)
                 url = f"https://www.sikayetvar.com/arcelik?page={page_num}"
 
             try:
@@ -111,11 +115,6 @@ def sikayetvar_scrape(search_query):
                                         "Additional Info": "N/A"
                                     })
                                     print(f"Added complaint #{complaint_count}: {profile_name_text} - {post_time_text}")
-
-                                    # Sleep to avoid blocks
-                                    sleep_time = randint(5, 10)
-                                    print(f"[[ Program sleeps for {sleep_time} seconds to avoid blocks ]]")
-                                    sleep(sleep_time)
          
                             except Exception as e:
                                 print(f"Error fetching complaint page: {complaint_url} - {e}")
