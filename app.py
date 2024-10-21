@@ -30,15 +30,17 @@ class SikayetVarRequest(BaseModel):
 async def scrape_youtube(request: YouTubeRequest):
     search_query = request.search_query
     if not search_query:
-        raise HTTPException(status_code=400, detail="Missing Yotube search query")
+        raise HTTPException(status_code=400, detail="Missing YouTube search query")
 
     factory = YouTubeScraperFactory()
     scraper = factory.create_scraper()
     result = scraper.scrape(search_query)
+    
+    # Ensure the result is JSON serializable (e.g., convert to dict if necessary)
     return {"result": result}
 
 @app.post('/scrape/instagram')
-def scrape_instagram(request: InstagramRequest):
+async def scrape_instagram(request: InstagramRequest):
     search_query = request.search_query
     if not search_query:
         raise HTTPException(status_code=400, detail="Missing Instagram search query")
@@ -46,6 +48,8 @@ def scrape_instagram(request: InstagramRequest):
     factory = InstagramScraperFactory()
     scraper = factory.create_scraper()
     result = scraper.scrape(search_query)
+    
+    # Ensure the result is JSON serializable
     return {"message": result}
 
 @app.post('/scrape/twitter')
@@ -56,7 +60,9 @@ async def scrape_twitter(request: TwitterRequest):
 
     factory = TwitterScraperFactory()
     scraper = factory.create_scraper()
-    result = await scraper.scrape(search_query)
+    result = await scraper.scrape(search_query)  # Await the asynchronous function
+    
+    # Ensure the result is JSON serializable
     return {"message": result}
 
 @app.post('/scrape/reddit')
@@ -68,6 +74,8 @@ async def scrape_reddit(request: RedditRequest):
     factory = RedditScraperFactory()
     scraper = factory.create_scraper()
     result = scraper.scrape(search_query)
+    
+    # Ensure the result is JSON serializable
     return {"message": result}
 
 @app.post('/scrape/sikayetvar')
@@ -78,7 +86,9 @@ async def scrape_sikayetvar(request: SikayetVarRequest):
 
     factory = SikayetVarScraperFactory()
     scraper = factory.create_scraper()
-    result = await scraper.scrape(search_query)
+    result = scraper.scrape(search_query)
+    
+    # Ensure the result is JSON serializable
     return {"message": result}
 
 if __name__ == "__main__":

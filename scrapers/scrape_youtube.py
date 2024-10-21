@@ -2,6 +2,7 @@ import os
 import csv
 from googleapiclient.discovery import build
 from configparser import ConfigParser
+from googleapiclient.errors import HttpError
 
 def youtube_scrape(keyword):
     # Get the current file's directory
@@ -37,30 +38,39 @@ def youtube_scrape(keyword):
             video_name = item['snippet']['title']
             channel_name = item['snippet']['channelTitle']
             
-            # Request comments for each video
-            comment_request = youtube.commentThreads().list(
-                part='snippet',
-                videoId=video_id,
-                maxResults=comment_limit
-            )
-            comment_response = comment_request.execute()
+            try:
+                # Request comments for each video
+                comment_request = youtube.commentThreads().list(
+                    part='snippet',
+                    videoId=video_id,
+                    maxResults=comment_limit
+                )
+                comment_response = comment_request.execute()
 
-            for i, comment_item in enumerate(comment_response['items']):
-                comment = comment_item['snippet']['topLevelComment']['snippet']['textDisplay']
-                author = comment_item['snippet']['topLevelComment']['snippet']['authorDisplayName']
+                for i, comment_item in enumerate(comment_response['items']):
+                    comment = comment_item['snippet']['topLevelComment']['snippet']['textDisplay']
+                    author = comment_item['snippet']['topLevelComment']['snippet']['authorDisplayName']
 
-                # Use writer.writerow with a dictionary
-                writer.writerow({
-                    "Post Number": i + 1,
-                    "Platform": "YouTube",
-                    "Username": author,
-                    "Content URL": f'https://www.youtube.com/watch?v={video_id}',
-                    "Text": comment,
-                    "Creation Date": 'N/A',  # You can fetch the date if needed
-                    "Likes": 'N/A',  # You can fetch the likes if needed
-                    "Comments": 'N/A',  # You can fetch the number of comments if needed
-                    "Additional Info": f"Video: {video_name}, Channel: {channel_name}"
-                })
+                    # Use writer.writerow with a dictionary
+                    writer.writerow({
+                        "Post Number": i + 1,
+                        "Platform": "YouTube",
+                        "Username": author,
+                        "Content URL": f'https://www.youtube.com/watch?v={video_id}',
+                        "Text": comment,
+                        "Creation Date": 'N/A',  # You can fetch the date if needed
+                        "Likes": 'N/A',  # You can fetch the likes if needed
+                        "Comments": 'N/A',  # You can fetch the number of comments if needed
+                        "Additional Info": f"Video: {video_name}, Channel: {channel_name}"
+                    })
+            
+            except HttpError as e:
+                # Check for the error status that corresponds to "comments disabled"
+                if e.resp.status == 403:
+                    print(f"Comments disabled for video: {video_name} (ID: {video_id}), skipping...")
+                else:
+                    print(f"An error occurred: {e}")
+                continue
 
     return "YouTube data scraped and saved to CSV."
 
