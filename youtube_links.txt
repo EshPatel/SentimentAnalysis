@@ -1,0 +1,13 @@
+Justin Bieber - Baby ft. Ludacris: https://youtu.be/kffacxfA7G4?si=fpB5e4JLW6oYr_YZ  kffacxfA7G4
+AIB Podcast : feat. Ranbir Kapoor (Part 01): https://www.youtube.com/watch?v=Vev2ybF2Z6g    Vev2ybF2Z6g
+Cute And Funny Baby Laughing Hysterically Compilation || 5-Minute Fails: 
+            https://www.youtube.com/watch?v=qVhAzSwJF-U&pp=ygUPbGF1Z2hpbmcgdmlkZW9z
+YouTube Rewind 2018: https://youtu.be/YbJOTdZBX1g?si=wyYgLtliiSIlJMJV
+
+
+cd youtube <press tab>
+source .venv/bin/activate
+python sentiment_analysis/youtub<press tab>
+
+if library not installed then:
+pip install -r requirements.txt 

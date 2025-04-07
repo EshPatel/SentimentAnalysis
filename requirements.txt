@@ -7,3 +7,10 @@ uvicorn
 pydantic
 configparser
 pandas
+nltk
+matplotlib
+seaborn
+textblob
+wordcloud
+collections
+scikit-learn

@@ -50,6 +50,7 @@ def youtube_scrape(keyword):
                 for i, comment_item in enumerate(comment_response['items']):
                     comment = comment_item['snippet']['topLevelComment']['snippet']['textDisplay']
                     author = comment_item['snippet']['topLevelComment']['snippet']['authorDisplayName']
+                    # print(comment_item['snippet']['topLevelComment']['snippet'])
 
                     # Use writer.writerow with a dictionary
                     writer.writerow({
@@ -72,5 +73,5 @@ def youtube_scrape(keyword):
                     print(f"An error occurred: {e}")
                 continue
 
-    return "YouTube data scraped and saved to CSV."
+    return f"YouTube data scraped and saved to CSV {current_dir}"
 
