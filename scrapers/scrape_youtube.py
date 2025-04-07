@@ -1,5 +1,6 @@
 import os
 import csv
+import pandas as pd
 from googleapiclient.discovery import build
 from configparser import ConfigParser
 from googleapiclient.errors import HttpError
@@ -26,6 +27,8 @@ def youtube_scrape(keyword, video_limit = None):
         maxResults=video_limit
     )
     search_response = search_request.execute()
+    
+    all_data = []
 
     # Open the CSV file using DictWriter
     with open(os.path.join(current_dir, 'csv_outputs/youtube_data.csv'), mode='w', newline='', encoding='utf-8') as file:
@@ -53,7 +56,7 @@ def youtube_scrape(keyword, video_limit = None):
                     # print(comment_item['snippet']['topLevelComment']['snippet'])
 
                     # Use writer.writerow with a dictionary
-                    writer.writerow({
+                    all_data.append({
                         "Post Number": i + 1,
                         "Platform": "YouTube",
                         "Username": author,
@@ -73,5 +76,6 @@ def youtube_scrape(keyword, video_limit = None):
                     print(f"An error occurred: {e}")
                 continue
 
-    return f"YouTube data scraped and saved to CSV {current_dir}"
+    df = pd.DataFrame(all_data)
+    return df
 
