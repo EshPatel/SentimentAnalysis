@@ -4,7 +4,7 @@ from googleapiclient.discovery import build
 from configparser import ConfigParser
 from googleapiclient.errors import HttpError
 
-def youtube_scrape(keyword):
+def youtube_scrape(keyword, video_limit = None):
     # Get the current file's directory
     current_dir = os.path.dirname(os.path.abspath(__file__))
     
@@ -13,7 +13,7 @@ def youtube_scrape(keyword):
     config.read(os.path.join(current_dir, 'config_files/youtube_config.ini'))
     api_key = config['YT']['api_key']
     comment_limit = int(config['YT']['comment_limit'])
-    video_limit = int(config['YT']['video_limit'])
+    video_limit = video_limit if video_limit else int(config['YT']['video_limit'])
 
     # login youtube
     youtube = build('youtube', 'v3', developerKey=api_key)

@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
@@ -8,17 +9,19 @@ app = FastAPI()
 # Request body models
 class YouTubeRequest(BaseModel):
     search_query: str
+    video_limit: Optional[int] = None
 
 # Routes
 @app.post('/scrape/youtube')
 async def scrape_youtube(request: YouTubeRequest):
     search_query = request.search_query
+    video_limit = request.video_limit
     if not search_query:
         raise HTTPException(status_code=400, detail="Missing YouTube search query")
 
     factory = YouTubeScraperFactory()
     scraper = factory.create_scraper()
-    result = scraper.scrape(search_query)
+    result = scraper.scrape(search_query, video_limit)
     
     # Ensure the result is JSON serializable (e.g., convert to dict if necessary)
     return {"result": result}

@@ -12,5 +12,4 @@ matplotlib
 seaborn
 textblob
 wordcloud
-collections
 scikit-learn
