@@ -1,2 +1,7 @@
 */__pycache__
 .venv
+__pycache__
+trend_analysis_metrics.csv
+youtube_links.txt
+analyzed_youtube_data.csv
+.DS_Store
