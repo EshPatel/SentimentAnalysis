@@ -8,51 +8,38 @@ from wordcloud import WordCloud
 from nltk.corpus import stopwords
 from nltk.sentiment import SentimentIntensityAnalyzer
 
-# Load the CSV data
-file_path = 'scrapers/csv_outputs/youtube_data.csv'  # Replace with the path to your CSV file
+# Download necessary NLTK resources
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('vader_lexicon')
+
+# Load CSV data
+file_path = 'scrapers/csv_outputs/youtube_data.csv'  # Adjust path as needed
 df = pd.read_csv(file_path)
 
-# Display the first few rows of the data for inspection
-print(df.head())
-
-# Preprocess text data
-nltk.download('punkt_tab')
-nltk.download('stopwords')
-nltk.download('averaged_perceptron_tagger')
-
+# Preprocessing
 stop_words = set(stopwords.words('english'))
 
 def preprocess_text(text):
-    # Remove URLs and special characters
-    text = re.sub(r'http\S+|[^\w\s]', ' ', str(text))
-    # Convert to lowercase
+    text = re.sub(r'http\S+|[^\w\s]', ' ', str(text))  # Remove links & special chars
     text = text.lower()
-    # Tokenize text
     words = nltk.word_tokenize(text)
-    # Remove stop words
     words = [word for word in words if word not in stop_words]
-    # Join words back into a string
     return ' '.join(words)
 
-# Apply preprocessing to the "Text" column
 df['cleaned_text'] = df['Text'].apply(preprocess_text)
 
-# Perform sentiment analysis using SentimentIntensityAnalyzer
-nltk.download('vader_lexicon')
+# Combine VADER and TextBlob sentiment
 sid = SentimentIntensityAnalyzer()
 
-df['sentiment_score'] = df['cleaned_text'].apply(lambda text: sid.polarity_scores(text)['compound'])
+def combined_sentiment(text):
+    blob_score = TextBlob(text).sentiment.polarity
+    vader_score = sid.polarity_scores(text)['compound']
+    return (blob_score + vader_score) / 2
 
-# Visualize sentiment scores using a histogram
-plt.figure(figsize=(10, 6))
-df['sentiment_score'].hist(bins=10, range=(-1, 1), color='skyblue', edgecolor='black', alpha=0.7)
-plt.title('Sentiment Analysis of YouTube Comments')
-plt.xlabel('Sentiment Score')
-plt.ylabel('Frequency')
-plt.grid(True)
-plt.show()
+df['sentiment_score'] = df['cleaned_text'].apply(combined_sentiment)
 
-# Add a sentiment category (Positive, Neutral, Negative) for further analysis
+# Categorize sentiment with adjusted threshold
 def categorize_sentiment(score):
     if score > 0.01:
         return 'Positive'
@@ -63,22 +50,25 @@ def categorize_sentiment(score):
 
 df['sentiment_category'] = df['sentiment_score'].apply(categorize_sentiment)
 
-# Visualize the distribution of sentiment categories in bar chart
+# Histogram of sentiment scores
+plt.figure(figsize=(10, 6))
+df['sentiment_score'].hist(bins=10, range=(-1, 1), color='skyblue', edgecolor='black', alpha=0.7)
+plt.title('Sentiment Score Distribution (Combined VADER + TextBlob)')
+plt.xlabel('Sentiment Score')
+plt.ylabel('Frequency')
+plt.grid(True)
+plt.show()
+
+# Bar chart of sentiment categories
 plt.figure(figsize=(8, 6))
 categories_order = ['Positive', 'Neutral', 'Negative']
 custom_palette = {
-    'Positive': '#90EE90',
-    'Neutral': '#FFFAA0',   # yellow is too light, gold shows better
-    'Negative': '#DC143C'
+    'Positive': '#4CAF50',   # green
+    'Neutral': '#FFEB3B',    # yellow
+    'Negative': '#F44336'    # red
 }
 
-ax = sns.countplot(
-    x='sentiment_category',
-    data=df,
-    order=categories_order,
-    palette=custom_palette
-)
-
+ax = sns.countplot(x='sentiment_category', data=df, order=categories_order, palette=custom_palette)
 total = len(df)
 for p in ax.patches:
     percentage = f"{100 * p.get_height() / total:.1f}%"
@@ -92,7 +82,7 @@ plt.ylabel('Count')
 plt.tight_layout()
 plt.show()
 
-# Word Cloud for Each Sentiment
+# Word Cloud for each sentiment
 for sentiment in ['Positive', 'Neutral', 'Negative']:
     text = ' '.join(df[df['sentiment_category'] == sentiment]['cleaned_text'])
     wordcloud = WordCloud(width=800, height=400, background_color='white', colormap='viridis').generate(text)
@@ -103,17 +93,17 @@ for sentiment in ['Positive', 'Neutral', 'Negative']:
     plt.title(f"Most Common Words in {sentiment} Comments")
     plt.show()
 
-# Save the analyzed data to a new CSV file
-output_file = '/path/to/analyzed_youtube_data.csv'
+# Save analyzed data
+output_file = 'scrapers/csv_outputs/analyzed_youtube_data.csv'
 df.to_csv(output_file, index=False)
 
-# Print sentiment category counts
+# Summary
 print("Sentiment Category Counts:")
 print(df['sentiment_category'].value_counts())
 
-# Print a sample of the cleaned and analyzed data
 print("\nSample of Cleaned and Analyzed Data:")
 print(df[['cleaned_text', 'sentiment_score', 'sentiment_category']].head())
+
 
 # import pandas as pd
 # import re
