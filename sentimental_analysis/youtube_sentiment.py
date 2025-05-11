@@ -66,10 +66,22 @@ df['sentiment_category'] = df['sentiment_score'].apply(categorize_sentiment)
 # Visualize the distribution of sentiment categories in bar chart
 plt.figure(figsize=(8, 6))
 categories_order = ['Positive', 'Neutral', 'Negative']
-ax = sns.countplot(x='sentiment_category', data=df, palette='viridis', order=categories_order)
+custom_palette = {
+    'Positive': '#90EE90',
+    'Neutral': '#FFFAA0',   # yellow is too light, gold shows better
+    'Negative': '#DC143C'
+}
+
+ax = sns.countplot(
+    x='sentiment_category',
+    data=df,
+    order=categories_order,
+    palette=custom_palette
+)
+
 total = len(df)
 for p in ax.patches:
-    percentage = f"{100 * p.get_height() / total:.1f}%"  # Format percentage
+    percentage = f"{100 * p.get_height() / total:.1f}%"
     x = p.get_x() + p.get_width() / 2
     y = p.get_height()
     ax.annotate(percentage, (x, y), ha='center', va='bottom')
@@ -77,6 +89,7 @@ for p in ax.patches:
 plt.title('Sentiment Category Distribution')
 plt.xlabel('Sentiment Category')
 plt.ylabel('Count')
+plt.tight_layout()
 plt.show()
 
 # Word Cloud for Each Sentiment
