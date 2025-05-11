@@ -17,7 +17,8 @@ nltk_resources = {
     'tokenizers/punkt': 'punkt', 'corpora/stopwords': 'stopwords',
     'sentiment/vader_lexicon.zip': 'vader_lexicon', 'corpora/wordnet': 'wordnet',
     'corpora/omw-1.4': 'omw-1.4', 'taggers/averaged_perceptron_tagger': 'averaged_perceptron_tagger',
-    'punkt_tab': 'punkt_tab'
+    'punkt_tab': 'punkt_tab',
+    'averaged_perceptron_tagger_eng': 'averaged_perceptron_tagger_eng'
 }
 for path, resource_name in nltk_resources.items():
     try: nltk.data.find(path)
