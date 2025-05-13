@@ -66,8 +66,6 @@ except ImportError as e_trend:
 
 app = FastAPI()
 
-app.mount("/", StaticFiles(directory="static"), name="static")
-
 # --- Directory Definitions ---
 BASE_DATA_DIR = os.path.join(APP_ROOT_DIR, "scrapers", "csv_outputs")
 PRESENTATION_OUTPUT_DIR = os.path.join(APP_ROOT_DIR, "presentation_outputs_app")
@@ -206,6 +204,7 @@ async def get_trend_plot_image(filename: str):
 #     return """
     
 #     """
+app.mount("/", StaticFiles(directory="static",html = True), name="static")
 
 if __name__ == "__main__":
     print(f"--- [app.py] Starting Application ---")
