@@ -7,6 +7,7 @@ import pandas as pd
 import os
 import sys
 import shutil
+from fastapi.staticfiles import StaticFiles
 
 APP_ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 if APP_ROOT_DIR not in sys.path:
@@ -48,8 +49,6 @@ except ImportError as e_sentiment:
 
 # Trend Analysis Module (assuming trend_analysis.py is in the same dir as app.py)
 try:
-    # The trend_analysis.py you provided needs to be refactored to have this function.
-    # For this example, let's assume its main function is called perform_trend_analysis.
     from sentimental_analysis.trend_analysis import perform_trend_analysis # Ensure this function exists in your trend_analysis.py
     TREND_ANALYSIS_MODULE_LOADED = True
     print("[app.py] Successfully imported 'perform_trend_analysis' from 'trend_analysis.py'")
@@ -65,6 +64,8 @@ except ImportError as e_trend:
         return {"error": None, "plots": dummy_trend_plots, "detailed_predictions_csv_path": detailed_csv, "cluster_summary_csv_path": summary_csv}
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # --- Directory Definitions ---
 BASE_DATA_DIR = os.path.join(APP_ROOT_DIR, "scrapers", "csv_outputs")
@@ -198,158 +199,21 @@ async def get_sentiment_plot_image(filename: str):
 async def get_trend_plot_image(filename: str):
     return await serve_file(filename, PRESENTATION_OUTPUT_DIR, 'image/png')
 
-@app.get("/", response_class=HTMLResponse)
-async def main_page_html():
-    # HTML is the same as the previous one, designed for the nested response
-    return """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>YouTube Advanced Analyzer</title>
-        <style>
-            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f0f2f5; color: #1c1e21; line-height: 1.6; }
-            .container { background-color: #ffffff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1); max-width: 900px; margin: 40px auto; }
-            h1 { color: #1877f2; text-align: center; margin-bottom: 20px; }
-            h2 { color: #333; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-top: 30px; font-size: 1.5em; }
-            h3 { color: #555; margin-top: 20px; font-size: 1.2em; }
-            label { display: block; margin-bottom: 5px; font-weight: bold; color: #606770; }
-            input[type="text"], input[type="number"] { width: calc(100% - 22px); padding: 10px; margin-bottom: 15px; border: 1px solid #ccd0d5; border-radius: 6px; font-size: 16px; }
-            button { background-color: #1877f2; color: white; padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background-color 0.2s; }
-            button:hover { background-color: #166fe5; }
-            .results-section { margin-top: 25px; padding: 15px; border: 1px solid #e0e0e0; border-radius: 6px; background-color: #f7f8fa; }
-            .results-section p, .results-section a { margin: 8px 0; font-size: 15px; }
-            .results-section a { color: #1877f2; text-decoration: none; font-weight: bold; }
-            .results-section a:hover { text-decoration: underline; }
-            .results-section img { max-width: 100%; height: auto; border: 1px solid #dddfe2; margin-top: 10px; margin-bottom: 20px; border-radius: 6px; display: block; }
-            .plot-container { margin-bottom: 20px; }
-            .loader { border: 5px solid #f0f2f5; border-top: 5px solid #1877f2; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
-            @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-            .error-message { color: #fa383e; font-weight: bold; }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1>YouTube Advanced Analyzer (Sentiment & Trends)</h1>
-            <form id="analyzeForm">
-                <label for="search_query">Search Query:</label>
-                <input type="text" id="search_query" name="search_query" value="AI in education" required>
-                <label for="video_limit">Video Limit (for scraping):</label>
-                <input type="number" id="video_limit" name="video_limit" value="1" min="1">
-                <button type="button" onclick="submitFullAnalysis()">Run Full Analysis</button>
-            </form>
-            <div id="processingMessage"></div>
-            <div id="sentimentResults" class="results-section" style="display:none;"><h2>Sentiment Analysis Results</h2><div id="sentimentContent"></div></div>
-            <div id="trendResults" class="results-section" style="display:none;"><h2>Trend Analysis Results</h2><div id="trendContent"></div></div>
-        </div>
-        <script>
-            async function submitFullAnalysis() {
-                const form = document.getElementById('analyzeForm');
-                const processingDiv = document.getElementById('processingMessage');
-                const sentimentResultsDiv = document.getElementById('sentimentResults');
-                const trendResultsDiv = document.getElementById('trendResults');
-                const sentimentContentDiv = document.getElementById('sentimentContent');
-                const trendContentDiv = document.getElementById('trendContent');
-
-                const data = {
-                    search_query: form.search_query.value,
-                    video_limit: parseInt(form.video_limit.value)
-                };
-
-                processingDiv.innerHTML = '<div class="loader"></div><p style="text-align:center;">Processing your request... This may take several moments.</p>';
-                sentimentResultsDiv.style.display = 'none';
-                trendResultsDiv.style.display = 'none';
-                sentimentContentDiv.innerHTML = '';
-                trendContentDiv.innerHTML = '';
-
-                try {
-                    const response = await fetch('/analyze_youtube_full_pipeline/', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify(data)
-                    });
-                    const result = await response.json(); 
-                    processingDiv.innerHTML = ''; 
-
-                    if (response.ok) {
-                        let sentimentHTML = '';
-                        if (result.sentiment_results) {
-                            sentimentResultsDiv.style.display = 'block';
-                            if(result.sentiment_results.analyzed_data_url) sentimentHTML += `<p><a href="${result.sentiment_results.analyzed_data_url}" target="_blank" download>Download Sentiment Analyzed CSV</a></p>`;
-                            if (result.sentiment_results.plot_urls && Object.keys(result.sentiment_results.plot_urls).length > 0) {
-                                sentimentHTML += '<h3>Sentiment Plots:</h3>';
-                                for (const [name_stem, url] of Object.entries(result.sentiment_results.plot_urls)) {
-                                    const displayName = formatDisplayName(name_stem, "Sentiment");
-                                    sentimentHTML += `<div class="plot-container"><p><strong>${displayName}:</strong></p><img src="${url}?cb=${new Date().getTime()}" alt="${displayName}"></div>`;
-                                }
-                            } else { sentimentHTML += '<p>No sentiment plots generated.</p>'; }
-                            sentimentContentDiv.innerHTML = sentimentHTML;
-                        }
-
-                        let trendHTML = '';
-                        if (result.trend_analysis_results) {
-                            trendResultsDiv.style.display = 'block';
-                            if(result.trend_analysis_results.detailed_predictions_csv_url) trendHTML += `<p><a href="${result.trend_analysis_results.detailed_predictions_csv_url}" target="_blank" download>Download Detailed Trend Predictions CSV</a></p>`;
-                            if(result.trend_analysis_results.cluster_summary_csv_url) trendHTML += `<p><a href="${result.trend_analysis_results.cluster_summary_csv_url}" target="_blank" download>Download Trend Cluster Summary CSV</a></p>`;
-                            if (result.trend_analysis_results.plot_urls && Object.keys(result.trend_analysis_results.plot_urls).length > 0) {
-                                trendHTML += '<h3>Trend Analysis Plots:</h3>';
-                                for (const [name_stem, url] of Object.entries(result.trend_analysis_results.plot_urls)) {
-                                     const displayName = formatDisplayName(name_stem, "Trend");
-                                     trendHTML += `<div class="plot-container"><p><strong>${displayName}:</strong></p><img src="${url}?cb=${new Date().getTime()}" alt="${displayName}"></div>`;
-                                }
-                            } else { trendHTML += '<p>No trend plots generated.</p>'; }
-                            trendContentDiv.innerHTML = trendHTML;
-                        }
-                        if (!sentimentHTML && !trendHTML && !(result.message && result.message.toLowerCase().includes("error"))) {
-                             processingDiv.innerHTML = "<p>Analysis may have completed, but no specific results or plots were returned. Check server logs.</p>"
-                        } else if (!sentimentHTML && !trendHTML && result.message) { 
-                            processingDiv.innerHTML = `<p>${result.message}</p>`;
-                        }
-
-
-                    } else {
-                        processingDiv.innerHTML = '';
-                        sentimentResultsDiv.style.display = 'block'; // Show sentiment div to display the error
-                        sentimentContentDiv.innerHTML = `<p class="error-message"><strong>Error ${response.status}:</strong> ${result.detail || 'An unknown error occurred.'}</p>`;
-                    }
-                } catch (error) {
-                    processingDiv.innerHTML = '';
-                    sentimentResultsDiv.style.display = 'block'; // Show sentiment div to display the error
-                    sentimentContentDiv.innerHTML = `<p class="error-message"><strong>Network/Client Error:</strong> ${error}. Check console.</p>`;
-                }
-            }
-
-            function formatDisplayName(name_stem, typePrefix) {
-                let displayName = name_stem
-                                    .replace("adv_", "")      // Remove "adv_" prefix
-                                    .replace("ngram_", "")   // Remove "ngram_" prefix
-                                    .replace(/_/g, ' ')      // Replace underscores with spaces
-                                    .replace('wordcloud', 'Word Cloud')
-                                    .replace('tfidf', '(TF-IDF)')
-                                    .replace('rawfreq', '(Raw Freq)')
-                                    .replace('cluster ', 'Cluster ') // Ensure space after Cluster
-                                    .replace('category distribution', 'Category Distribution');
-                
-                // Capitalize first letter of each word
-                displayName = displayName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-                return displayName;
-            }
-        </script>
-    </body>
-    </html>
-    """
+# @app.get("/", response_class=HTMLResponse)
+# async def main_page_html():
+#     # HTML is the same as the previous one, designed for the nested response
+#     return """
+    
+#     """
 
 if __name__ == "__main__":
     print(f"--- [app.py] Starting Application ---")
-    # The following lines help debug Python's module search path when running locally.
-    # On Render, the environment setup might differ, but this is good for local checks.
     print(f"[app.py] Current Working Directory: {os.getcwd()}")
     print(f"[app.py] APP_ROOT_DIR (Directory of app.py): {APP_ROOT_DIR}")
     print(f"[app.py] Python sys.path:")
     for p in sys.path:
         print(f"  - {p}")
     
-    # Verify if the analysis files are detectable from APP_ROOT_DIR
     print(f"[app.py] Checking for 'youtube_sentiment.py' in APP_ROOT_DIR: {os.path.exists(os.path.join(APP_ROOT_DIR, 'youtube_sentiment.py'))}")
     print(f"[app.py] Checking for 'trend_analysis.py' in APP_ROOT_DIR: {os.path.exists(os.path.join(APP_ROOT_DIR, 'trend_analysis.py'))}")
 

@@ -1,0 +1,261 @@
+/* Global reset and base styles */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    margin: 0;
+    background-color: #f0f2f5;
+    color: #1c1e21;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+h1 {
+    color: #1877f2;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.2em;
+    font-weight: 600;
+}
+
+h2 {
+    color: #1877f2;
+    border-bottom: 2px solid #e7f3ff;
+    padding-bottom: 12px;
+    margin-top: 40px;
+    margin-bottom: 25px;
+    font-size: 1.75em;
+    font-weight: 500;
+}
+
+h3 {
+    color: #333;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+    font-weight: 500;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #4b4f56;
+}
+
+input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ccd0d5;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
+    border-color: #1877f2;
+    box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.15);
+    outline: none;
+}
+
+button[type="button"], .cta-button, .back-link {
+    background-color: #1877f2;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.05rem;
+    font-weight: 600;
+    transition: background-color 0.2s, transform 0.1s, opacity 0.2s;
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    text-decoration: none; /* For <a> styled as button */
+    text-align: center; /* For <a> styled as button */
+}
+
+.cta-button { /* Specific styling if needed, inherits from button */
+    width: auto; /* Allow button to size to content */
+    min-width: 250px; /* Ensure decent minimum width */
+    display: inline-block; /* Center it */
+    background-color: #28a745; /* Green for CTA */
+}
+.cta-button:hover {
+    background-color: #218838;
+}
+
+.back-link {
+    background-color: #6c757d; /* Secondary/gray color */
+    display: inline-block;
+    width: auto;
+    padding: 10px 20px;
+}
+.back-link:hover {
+    background-color: #5a6268;
+}
+
+
+button[type="button"]:hover {
+    background-color: #166fe5;
+}
+
+button[type="button"]:active, .cta-button:active {
+    transform: scale(0.98);
+}
+
+button[type="button"]:disabled {
+    background-color: #a0b3c9;
+    color: #e4e6eb;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+#statusMessages, #statusMessagesTrends {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    min-height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#statusMessages p, #statusMessagesTrends p {
+    text-align: center;
+    font-size: 1.1em;
+    color: #606770;
+    margin-top: 10px;
+}
+
+.loader {
+    border: 5px solid #e9ebee;
+    border-top: 5px solid #1877f2;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 10px auto;
+}
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+.error-message, .success-message, .info-message {
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    width: 100%;
+    text-align: left;
+}
+.error-message { color: #fa383e; background-color: #ffebee; border: 1px solid #fa383e; }
+.success-message { color: #0f5132; background-color: #d1e7dd; border: 1px solid #badbcc; }
+.info-message { color: #055160; background-color: #cff4fc; border: 1px solid #9eeaf9; }
+.error-message strong { font-weight: bold; }
+
+.results-section {
+    margin-top: 30px;
+    padding: 25px;
+    border: 1px solid #e9ebee;
+    border-radius: 8px;
+    background-color: #f7f8fa;
+}
+
+.results-section h2 { margin-top: 0; margin-bottom: 20px; }
+.results-content p { margin: 10px 0; }
+
+.results-content a.download-link {
+    display: inline-block;
+    background-color: #e7f3ff;
+    color: #1877f2;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.results-content a.download-link:hover {
+    background-color: #d0e7ff;
+    color: #166fe5;
+    border-color: #adcffa;
+    text-decoration: none;
+}
+
+.plot-container {
+    background-color: #ffffff;
+    border: 1px solid #dddfe2;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    min-height: 100px;
+}
+.plot-container p strong {
+    font-size: 1.15em;
+    color: #1c1e21;
+    display: block;
+    margin-bottom: 12px;
+}
+.results-section img, .plot-container img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+    display: block;
+    margin-top: 8px;
+}
+
+/* Word Cloud Row Specific Styles */
+.wordcloud-row {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    justify-content: space-around; /* Distribute items evenly */
+    gap: 20px; /* Space between word cloud items */
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.wordcloud-item {
+    flex: 1 1 30%; /* Grow, shrink, base width around 30% (for 3 items) */
+    min-width: 280px; /* Minimum width before wrapping or major squishing */
+    background-color: #ffffff; /* Match plot-container if nested */
+    border: 1px solid #dddfe2; /* Match plot-container if nested */
+    border-radius: 8px; /* Match plot-container if nested */
+    padding: 15px; /* Match plot-container if nested */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Match plot-container if nested */
+}
+.wordcloud-item .plot-container { /* If plot-container is inside wordcloud-item, remove its own outer styling */
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin-bottom: 0;
+}
+.wordcloud-item img {
+    margin: 0 auto; /* Center image if it's smaller than container */
+}
+
+
+.footer {
+    text-align: center;
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ebee;
+    font-size: 0.9em;
+    color: #8a8d91;
+}

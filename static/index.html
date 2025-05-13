@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Advanced Analyzer - Input & Sentiment</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Advanced Analyzer</h1>
+        <form id="analyzeForm">
+            <div>
+                <label for="search_query">YouTube Search Query:</label>
+                <input type="text" id="search_query" name="search_query" value="AI in education" required>
+            </div>
+            <div>
+                <label for="video_limit">Number of Videos to Analyze:</label>
+                <input type="number" id="video_limit" name="video_limit" value="1" min="1" required>
+            </div>
+            <button type="button" id="analyzeButton" onclick="submitFullAnalysis()">Run Full Analysis</button>
+        </form>
+
+        <div id="statusMessages" aria-live="polite">
+            <!-- Processing messages, errors, and status updates will appear here -->
+        </div>
+
+        <div id="sentimentResults" class="results-section" style="display:none;">
+            <h2>Sentiment Analysis Results</h2>
+            <div id="sentimentContent" class="results-content">
+                <!-- Sentiment plots and links will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <div id="ctaTrendAnalysisContainer" style="display:none; text-align: center; margin-top: 30px; margin-bottom: 20px;">
+            <button type="button" id="goToTrendAnalysisButton" class="cta-button">Proceed to Trend Analysis</button>
+        </div>
+        
+        <div class="footer">
+            <p>© 2024 YouTube Analyzer. Output is for demonstration purposes.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
