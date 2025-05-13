@@ -223,23 +223,30 @@ button[type="button"]:disabled {
 
 /* Word Cloud Row Specific Styles */
 .wordcloud-row {
-    display: flex;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    justify-content: space-around; /* Distribute items evenly */
-    gap: 20px; /* Space between word cloud items */
+    /* display: flex; Removed to stack items vertically */
+    /* flex-wrap: wrap; Removed */
+    /* justify-content: space-around; Removed */
+    /* gap: 20px; Removed, using margin on items instead */
     margin-top: 20px;
     margin-bottom: 20px;
 }
 
 .wordcloud-item {
-    flex: 1 1 30%; /* Grow, shrink, base width around 30% (for 3 items) */
-    min-width: 280px; /* Minimum width before wrapping or major squishing */
-    background-color: #ffffff; /* Match plot-container if nested */
-    border: 1px solid #dddfe2; /* Match plot-container if nested */
-    border-radius: 8px; /* Match plot-container if nested */
-    padding: 15px; /* Match plot-container if nested */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Match plot-container if nested */
+    /* flex: 1 1 30%; Removed */
+    /* min-width: 280px; Removed to prevent overflow on small screens */
+    width: 100%; /* Make item take full width of parent */
+    background-color: #ffffff;
+    border: 1px solid #dddfe2;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 20px; /* Space between stacked items */
 }
+
+.wordcloud-item:last-child {
+    margin-bottom: 0; /* Remove margin from the last item */
+}
+
 .wordcloud-item .plot-container { /* If plot-container is inside wordcloud-item, remove its own outer styling */
     border: none;
     box-shadow: none;
