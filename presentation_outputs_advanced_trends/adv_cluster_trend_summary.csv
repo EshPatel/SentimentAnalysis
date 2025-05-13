@@ -1,11 +1,6 @@
 Cluster,Size,AvgSentiment,PositiveRatio,TopTerms,TrendScore,TrendScore_Normalized
-2,3,0.4501,1.0000,"nicely, human nicely, nicely dog, quot, human, cool quot, cool, nicely quot, quot nicely, hard",2.3638,100.0000
-5,4,0.4277,0.7500,"good, href, dunananana, good dunananana, href woooo, woooo good, woooo, wolf lethal, lethal company, lethal",2.0899,88.1009
-1,13,0.1338,0.5385,"fox, sound, fox bark, bark, heard, fox mimic, mimic, heard fox, fox cry, cry",2.0789,87.6266
-6,28,0.0802,0.3571,"kid, talk, pup, hahahah, ohhhhhhhhhhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, goodness, hugo, 1st, baby, scar",1.8167,76.2362
-8,15,0.0341,0.4000,"dog, rockstar dog, dog special, special, rockstar, reward, chowder, sound chowder, dog sound, dog dog",1.5721,65.6156
-7,11,0.0131,0.1818,"husky, scream, husky scream, husky sing, husky hehehe, yhat, expect, hehehe, yhat husky, husky expect",0.7795,31.1906
-0,6,-0.1644,0.1667,"raise, devil, raise dog, devil raise, dog, scream, ærrr, dog ærrr, bark raise, raise devil",0.4855,18.4214
-9,8,-0.1806,0.1250,"quot, raise quot, quot devil, quot quot, devil raise, devil, raise, dog, dog quot, quot cant",0.4545,17.0776
-3,3,-0.2896,0.0000,"crate, open crate, open, scary, end, crate end, bed, doberman, doberman scary, scary cuddle",0.1123,2.2159
-4,3,-0.6577,0.0000,"idiot, dog idiot, dog, human owner, idiot human, owner, stop, stop call, call dog, call",0.0613,0.0000
+2,53,0.0428,0.3774,"dog, good, kid, raise, devil, talk, goodness, hahahah, pup, ohhhhhhhhhhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",2.1761,100.0000
+1,14,0.1243,0.5000,"fox, fox bark, bark, sound, heard, mimic, fox mimic, bark raise, dog, heard fox",1.9892,88.6262
+4,12,0.0474,0.2500,"husky, scream, husky scream, husky sing, yhat husky, yhat, expect, husky hehehe, hehehe, husky expect",1.0300,30.2343
+3,11,-0.1397,0.1818,"quot, quot quot, quot devil, raise quot, devil raise, devil, raise, dog, bed, dog quot",0.6725,8.4709
+0,4,-0.1532,0.2500,"human, dog, nicely dog, human nicely, pet, owner, human owner, idiot human, nicely, dog idiot",0.5333,0.0000
