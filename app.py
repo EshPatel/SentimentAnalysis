@@ -8,20 +8,16 @@ import os
 import sys
 import shutil
 
-# --- Path Setup for Imports ---
-# Ensures the directory containing app.py (expected to be the project root) is on the Python path.
-# This is crucial for Render to find your other .py files if they are in the same directory.
 APP_ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 if APP_ROOT_DIR not in sys.path:
     sys.path.insert(0, APP_ROOT_DIR)
 
-# --- Module Imports ---
-# Scraper Factory
+
 try:
-    from factories.youtube_factory import YouTubeScraperFactory # Assumes factories is a package at root
+    from factories.youtube_factory import YouTubeScraperFactory
 except ImportError as e_scraper:
     print(f"WARNING: [app.py] factories.youtube_factory.YouTubeScraperFactory not found: {e_scraper}. Using Mock Scraper.")
-    class MockYouTubeScraper: # Define Mock Scraper if import fails
+    class MockYouTubeScraper: 
         def scrape(self, search_query, video_limit=5):
             print(f"[app.py] Mock scraping for '{search_query}' with limit {video_limit}...")
             from datetime import datetime, timedelta
@@ -38,7 +34,7 @@ except ImportError as e_scraper:
 
 # Sentiment Analysis Module (assuming youtube_sentiment.py is in the same dir as app.py)
 try:
-    from youtube_sentiment import perform_sentiment_analysis_and_generate_plots
+    from sentimental_analysis.youtube_sentiment import perform_sentiment_analysis_and_generate_plots
     SENTIMENT_MODULE_LOADED = True
     print("[app.py] Successfully imported 'perform_sentiment_analysis_and_generate_plots' from 'youtube_sentiment.py'")
 except ImportError as e_sentiment:
@@ -54,7 +50,7 @@ except ImportError as e_sentiment:
 try:
     # The trend_analysis.py you provided needs to be refactored to have this function.
     # For this example, let's assume its main function is called perform_trend_analysis.
-    from trend_analysis import perform_trend_analysis # Ensure this function exists in your trend_analysis.py
+    from sentimental_analysis.trend_analysis import perform_trend_analysis # Ensure this function exists in your trend_analysis.py
     TREND_ANALYSIS_MODULE_LOADED = True
     print("[app.py] Successfully imported 'perform_trend_analysis' from 'trend_analysis.py'")
 except ImportError as e_trend:
