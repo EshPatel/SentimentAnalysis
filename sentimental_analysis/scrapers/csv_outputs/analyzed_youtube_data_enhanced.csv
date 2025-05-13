@@ -1,0 +1,6 @@
+Text,cleaned_text_for_wc,sentiment_score,sentiment_category
+This is SOOOO great!!! I love it ❤️❤️❤️ !!! AMAZING!,soo great love red_heart red_heart red_heart amaze,0.9836064999999999,Positive
+"This is pretty good, thanks :)",pretty good,0.77257,Positive
+"meh, it's okay I guess.",meh guess,0.10717,Positive
+Not a fan. Could be better.,fan could,0.16477999999999998,Positive
+This is absolutely TERRIBLE. HATE IT 😠😠😠 WORST EVER!!!!,absolutely terrible hate angry_face angry_face angry_face bad ever,-1.0,Negative

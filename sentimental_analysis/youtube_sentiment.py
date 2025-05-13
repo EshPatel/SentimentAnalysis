@@ -211,7 +211,6 @@ def perform_sentiment_analysis_and_generate_plots(raw_scraped_csv_path, output_p
 
 if __name__ == "__main__":
     print("--- [youtube_sentiment.py] Standalone Test ---")
-    # Get the project root directory (assuming this script is in sentimental_analysis subdir)
     current_script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(current_script_dir) 
     
