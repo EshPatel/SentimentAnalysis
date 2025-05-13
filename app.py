@@ -130,7 +130,7 @@ async def analyze_youtube_full_pipeline_endpoint(request: YouTubeRequest, backgr
     if TREND_ANALYSIS_MODULE_LOADED and analyzed_sentiment_csv_path and os.path.exists(analyzed_sentiment_csv_path):
         print(f"[app.py] Starting trend analysis using: {analyzed_sentiment_csv_path}...")
         trend_analysis_results = perform_trend_analysis( # Call the refactored function
-            analyzed_sentiment_csv_path, PRESENTATION_OUTPUT_DIR, timestamp_col=TIMESTAMP_COLUMN_FOR_TRENDS
+            analyzed_sentiment_csv_path, PRESENTATION_OUTPUT_DIR, timestamp_col_name=TIMESTAMP_COLUMN_FOR_TRENDS
         )
         if trend_analysis_results.get("error"):
             print(f"[app.py] Trend analysis failed: {trend_analysis_results['error']}")

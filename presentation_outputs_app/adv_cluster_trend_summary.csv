@@ -1,0 +1,6 @@
+Cluster,Size,AvgSentiment,PositiveRatio,TopTerms,TrendScore,TrendScore_Normalized
+2,20,0.2855,0.7000,"use, student, teacher, something, cheat, help, quot, time, answer, write",3.3745,100.0000
+1,5,0.4987,1.0000,"interest, discussion, timely, timely discussion, interest timely, great, learner, topic every, every time, easy interest",3.1509,93.0210
+3,53,0.1457,0.4906,"sal, quot, education, nice, idea, tutor, school, amazingg, khanmigo, college",2.9345,86.2654
+0,15,0.1934,0.4667,"khan, academy, khan academy, sal khan, voice, sal, think, awesome, awesome khan, voice khan",2.0320,58.0933
+4,4,-0.0370,0.0000,"href, stooooooooooooooooooooooooooooop, href stooooooooooooooooooooooooooooop, href stop, stop clap, clap, cloud, code, code cloud, href code",0.1711,0.0000
