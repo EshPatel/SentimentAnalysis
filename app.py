@@ -9,6 +9,8 @@ import sys
 import shutil
 
 # --- Path Setup for Imports ---
+# Ensures the directory containing app.py (expected to be the project root) is on the Python path.
+# This is crucial for Render to find your other .py files if they are in the same directory.
 APP_ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 if APP_ROOT_DIR not in sys.path:
     sys.path.insert(0, APP_ROOT_DIR)
@@ -16,10 +18,10 @@ if APP_ROOT_DIR not in sys.path:
 # --- Module Imports ---
 # Scraper Factory
 try:
-    from factories.youtube_factory import YouTubeScraperFactory
-except ImportError:
-    print("WARNING: [app.py] factories.youtube_factory.YouTubeScraperFactory not found. Using Mock Scraper.")
-    class MockYouTubeScraper:
+    from factories.youtube_factory import YouTubeScraperFactory # Assumes factories is a package at root
+except ImportError as e_scraper:
+    print(f"WARNING: [app.py] factories.youtube_factory.YouTubeScraperFactory not found: {e_scraper}. Using Mock Scraper.")
+    class MockYouTubeScraper: # Define Mock Scraper if import fails
         def scrape(self, search_query, video_limit=5):
             print(f"[app.py] Mock scraping for '{search_query}' with limit {video_limit}...")
             from datetime import datetime, timedelta
@@ -27,82 +29,60 @@ except ImportError:
             data = []
             for i in range(video_limit * 5):
                 data.append({
-                    'Text': f"Comment {i+1} on {search_query}. This is a comment about topic_A and keyword1. {'GREAT!!!' if i%3==0 else ''}",
-                    'PublishedAt': (base_date - timedelta(days=i % 10)).isoformat() # Mock timestamps
+                    'Text': f"Mock comment {i+1} on {search_query}. This topic is great! {'AMAZING!!!' if i%3==0 else ''}",
+                    'PublishedAt': (base_date - timedelta(days=i % 10)).isoformat()
                 })
-            data.append({'Text': f"Another neutral thought on {search_query}, discussing topic_B and keyword2.", 'PublishedAt': (base_date - timedelta(days=3)).isoformat()})
-            data.append({'Text': f"This {search_query} is not good. Topic_C and keyword3. {'BAD!!!' if True else ''}", 'PublishedAt': (base_date - timedelta(days=1)).isoformat()})
-            if not data: return pd.DataFrame(columns=['Text', 'PublishedAt'])
             return pd.DataFrame(data)
     class YouTubeScraperFactory:
         def create_scraper(self): return MockYouTubeScraper()
 
-# Sentiment Analysis Module (using the version from THIS prompt)
+# Sentiment Analysis Module (assuming youtube_sentiment.py is in the same dir as app.py)
 try:
     from youtube_sentiment import perform_sentiment_analysis_and_generate_plots
     SENTIMENT_MODULE_LOADED = True
-except ImportError as e:
+    print("[app.py] Successfully imported 'perform_sentiment_analysis_and_generate_plots' from 'youtube_sentiment.py'")
+except ImportError as e_sentiment:
     SENTIMENT_MODULE_LOADED = False
-    print(f"ERROR: [app.py] Failed to import from youtube_sentiment: {e}")
+    print(f"ERROR: [app.py] Failed to import from 'youtube_sentiment.py': {e_sentiment}")
+    print(f"[app.py] Ensure 'youtube_sentiment.py' is in the root directory with 'app.py'. Current sys.path: {sys.path}")
     def perform_sentiment_analysis_and_generate_plots(csv, plot_dir): # Dummy
         print("WARNING: [app.py] Using DUMMY sentiment analysis function.")
-        # This dummy needs to create 'analyzed_youtube_data.csv' and use 'cleaned_text'
-        analyzed_csv_path = os.path.join(os.path.dirname(str(csv)), "analyzed_youtube_data.csv")
-        try:
-            pd.DataFrame({'Text':['dummy'], 'cleaned_text':['dummy text'], 'sentiment_score':[0], 'sentiment_category':['Neutral']}).to_csv(analyzed_csv_path, index=False)
-        except: pass
-        return {"error": None, "plots": {"category_distribution": "dummy_cat.png", "positive_wordcloud_rawfreq":"dummy_pos.png"}, "analyzed_csv_path": analyzed_csv_path}
+        analyzed_csv_path = os.path.join(os.path.dirname(str(csv)), "analyzed_youtube_data.csv") # Expected by the trend_analysis.py you provided
+        return {"error": None, "plots": {"category_distribution": "dummy_cat.png"}, "analyzed_csv_path": analyzed_csv_path}
 
-# Trend Analysis Module (assuming you refactor the one from THIS prompt)
-# Let's name the refactored function `perform_basic_trend_analysis` to distinguish
+# Trend Analysis Module (assuming trend_analysis.py is in the same dir as app.py)
 try:
-    # YOU NEED TO CREATE THIS FUNCTION IN YOUR trend_analysis.py
-    from trend_analysis import perform_trend_analysis 
+    # The trend_analysis.py you provided needs to be refactored to have this function.
+    # For this example, let's assume its main function is called perform_trend_analysis.
+    from trend_analysis import perform_trend_analysis # Ensure this function exists in your trend_analysis.py
     TREND_ANALYSIS_MODULE_LOADED = True
-except ImportError as e:
+    print("[app.py] Successfully imported 'perform_trend_analysis' from 'trend_analysis.py'")
+except ImportError as e_trend:
     TREND_ANALYSIS_MODULE_LOADED = False
-    print(f"ERROR: [app.py] Failed to import perform_trend_analysis from trend_analysis.py: {e}")
-    print("[app.py] Ensure trend_analysis.py has a callable function 'perform_trend_analysis'.")
+    print(f"ERROR: [app.py] Failed to import 'perform_trend_analysis' from 'trend_analysis.py': {e_trend}")
+    print(f"[app.py] Ensure 'trend_analysis.py' is in the root directory and has the function. Current sys.path: {sys.path}")
     def perform_trend_analysis(analyzed_sentiment_csv_path, output_plot_dir_param, timestamp_col=None): # Dummy
         print("WARNING: [app.py] Using DUMMY trend analysis function.")
-        dummy_trend_plots = {}
-        trend_plot_stems = ["adv_elbow_plot", "adv_cluster_trend_score_comparison", "adv_network_cluster_0"] # Match filenames from that trend.py
-        for stem in trend_plot_stems:
-            p_filename = f"{stem}.png"
-            p_path = os.path.join(output_plot_dir_param, p_filename)
-            try:
-                with open(p_path, "w") as f: f.write("dummy trend plot")
-                dummy_trend_plots[stem.replace("adv_", "")] = p_path # Simplify key for HTML
-            except Exception as file_e: print(f"[app.py] Could not create dummy trend plot file {p_path}: {file_e}")
-        
-        dummy_trend_detailed_csv_path = os.path.join(os.path.dirname(str(analyzed_sentiment_csv_path)), "advanced_trend_analysis_predictions.csv")
-        dummy_trend_summary_csv_path = os.path.join(output_plot_dir_param, "adv_cluster_trend_summary.csv")
-        try:
-            pd.DataFrame({'Cluster':[0], 'TrendScore_Normalized':[75]}).to_csv(dummy_trend_detailed_csv_path, index=False)
-            pd.DataFrame({'Cluster':[0], 'TopTerms':['dummy trend']}).to_csv(dummy_trend_summary_csv_path, index=False)
-        except: pass
-        return {
-            "error": None, 
-            "plots": dummy_trend_plots, 
-            "detailed_predictions_csv_path": dummy_trend_detailed_csv_path,
-            "cluster_summary_csv_path": dummy_trend_summary_csv_path
-        }
+        dummy_trend_plots = {"elbow_plot": "dummy_elbow.png"} # Keep it simple
+        detailed_csv = os.path.join(os.path.dirname(str(analyzed_sentiment_csv_path)), "advanced_trend_analysis_predictions.csv")
+        summary_csv = os.path.join(output_plot_dir_param, "adv_cluster_trend_summary.csv")
+        return {"error": None, "plots": dummy_trend_plots, "detailed_predictions_csv_path": detailed_csv, "cluster_summary_csv_path": summary_csv}
 
 app = FastAPI()
 
+# --- Directory Definitions ---
 BASE_DATA_DIR = os.path.join(APP_ROOT_DIR, "scrapers", "csv_outputs")
-PRESENTATION_OUTPUT_DIR = os.path.join(APP_ROOT_DIR, "presentation_outputs_app") # Main plot dir
+PRESENTATION_OUTPUT_DIR = os.path.join(APP_ROOT_DIR, "presentation_outputs_app")
 
 os.makedirs(BASE_DATA_DIR, exist_ok=True)
 os.makedirs(PRESENTATION_OUTPUT_DIR, exist_ok=True)
 
 RAW_SCRAPED_DATA_FILENAME = "youtube_data_raw.csv"
-# Filename from the youtube_sentiment.py you provided in THIS prompt
+# This filename is produced by the youtube_sentiment.py you provided
 SENTIMENT_ANALYZED_FILENAME = "analyzed_youtube_data.csv"
-
-# Filenames from the trend_analysis.py you provided in THIS prompt
-TREND_ANALYSIS_DETAILED_CSV_OUTPUT_FILENAME = 'advanced_trend_analysis_predictions.csv' # Saved in BASE_DATA_DIR
-TREND_ANALYSIS_SUMMARY_CSV_FILENAME = 'adv_cluster_trend_summary.csv' # Saved in PRESENTATION_OUTPUT_DIR
+# These filenames are produced by the trend_analysis.py you provided
+TREND_ANALYSIS_DETAILED_CSV_OUTPUT_FILENAME = 'advanced_trend_analysis_predictions.csv'
+TREND_ANALYSIS_SUMMARY_CSV_FILENAME = 'adv_cluster_trend_summary.csv'
 
 TIMESTAMP_COLUMN_FOR_TRENDS = 'PublishedAt'
 
@@ -131,42 +111,39 @@ async def analyze_youtube_full_pipeline_endpoint(request: YouTubeRequest, backgr
         df_scraped_raw.to_csv(raw_scraped_csv_path, index=False)
         print(f"[app.py] Scraping complete. RAW data saved to: {raw_scraped_csv_path}")
     except Exception as e:
+        print(f"[app.py] Scraping error: {e}")
         raise HTTPException(status_code=500, detail=f"Scraping failed: {str(e)}")
 
     sentiment_analysis_results = {}
-    analyzed_sentiment_csv_path = None # This will be BASE_DATA_DIR/analyzed_youtube_data.csv
+    analyzed_sentiment_csv_path = None
     if SENTIMENT_MODULE_LOADED:
         print(f"[app.py] Starting sentiment analysis...")
         sentiment_analysis_results = perform_sentiment_analysis_and_generate_plots(
-            raw_scraped_csv_path, PRESENTATION_OUTPUT_DIR # Plots go to presentation_outputs_app
+            raw_scraped_csv_path, PRESENTATION_OUTPUT_DIR
         )
         if sentiment_analysis_results.get("error"):
             raise HTTPException(status_code=500, detail=f"Sentiment analysis part failed: {sentiment_analysis_results['error']}")
-        analyzed_sentiment_csv_path = sentiment_analysis_results.get("analyzed_csv_path") # This is crucial
+        analyzed_sentiment_csv_path = sentiment_analysis_results.get("analyzed_csv_path")
         print(f"[app.py] Sentiment analysis complete. Analyzed CSV: {analyzed_sentiment_csv_path}")
     else:
-        return JSONResponse(status_code=501, content={"detail": "Sentiment analysis module not loaded."})
+        return JSONResponse(status_code=501, content={"detail": "Sentiment analysis module 'youtube_sentiment.py' not loaded."})
 
     trend_analysis_results = {}
     detailed_trend_predictions_csv_path = None
     cluster_trend_summary_csv_path = None
     if TREND_ANALYSIS_MODULE_LOADED and analyzed_sentiment_csv_path and os.path.exists(analyzed_sentiment_csv_path):
         print(f"[app.py] Starting trend analysis using: {analyzed_sentiment_csv_path}...")
-        # The trend_analysis.py you provided saves plots to its own "presentation_outputs_advanced_trends"
-        # For consistency, we'll pass PRESENTATION_OUTPUT_DIR to it as well.
-        # You'll need to ensure your refactored trend_analysis.py uses this parameter.
         trend_analysis_results = perform_trend_analysis( # Call the refactored function
             analyzed_sentiment_csv_path, PRESENTATION_OUTPUT_DIR, timestamp_col=TIMESTAMP_COLUMN_FOR_TRENDS
         )
         if trend_analysis_results.get("error"):
             print(f"[app.py] Trend analysis failed: {trend_analysis_results['error']}")
         else:
-            # Assuming your refactored trend_analysis returns these paths
-            detailed_trend_predictions_csv_path = trend_analysis_results.get("detailed_predictions_csv_path") # Expected in BASE_DATA_DIR
-            cluster_trend_summary_csv_path = trend_analysis_results.get("cluster_summary_csv_path")       # Expected in PRESENTATION_OUTPUT_DIR
+            detailed_trend_predictions_csv_path = trend_analysis_results.get("detailed_predictions_csv_path")
+            cluster_trend_summary_csv_path = trend_analysis_results.get("cluster_summary_csv_path")
             print(f"[app.py] Trend analysis complete.")
     elif not TREND_ANALYSIS_MODULE_LOADED:
-        print("[app.py] Trend analysis module not loaded. Skipping.")
+        print("[app.py] Trend analysis module 'trend_analysis.py' not loaded. Skipping.")
     elif not analyzed_sentiment_csv_path or not os.path.exists(analyzed_sentiment_csv_path):
         print("[app.py] Analyzed sentiment CSV not available for trend analysis. Skipping.")
 
@@ -227,8 +204,7 @@ async def get_trend_plot_image(filename: str):
 
 @app.get("/", response_class=HTMLResponse)
 async def main_page_html():
-    # HTML needs to be updated to show both sentiment and trend results correctly
-    # (The HTML from the previous response is already good for this nested structure)
+    # HTML is the same as the previous one, designed for the nested response
     return """
     <!DOCTYPE html>
     <html lang="en">
@@ -328,34 +304,34 @@ async def main_page_html():
                             } else { trendHTML += '<p>No trend plots generated.</p>'; }
                             trendContentDiv.innerHTML = trendHTML;
                         }
-                        if (!sentimentHTML && !trendHTML && !result.message.includes("Error")) { // Check if no useful content and no explicit error message
+                        if (!sentimentHTML && !trendHTML && !(result.message && result.message.toLowerCase().includes("error"))) {
                              processingDiv.innerHTML = "<p>Analysis may have completed, but no specific results or plots were returned. Check server logs.</p>"
-                        } else if (!sentimentHTML && !trendHTML && result.message) { // Display message if it's the only thing
+                        } else if (!sentimentHTML && !trendHTML && result.message) { 
                             processingDiv.innerHTML = `<p>${result.message}</p>`;
                         }
 
 
                     } else {
                         processingDiv.innerHTML = '';
-                        sentimentResultsDiv.style.display = 'block';
+                        sentimentResultsDiv.style.display = 'block'; // Show sentiment div to display the error
                         sentimentContentDiv.innerHTML = `<p class="error-message"><strong>Error ${response.status}:</strong> ${result.detail || 'An unknown error occurred.'}</p>`;
                     }
                 } catch (error) {
                     processingDiv.innerHTML = '';
-                    sentimentResultsDiv.style.display = 'block';
+                    sentimentResultsDiv.style.display = 'block'; // Show sentiment div to display the error
                     sentimentContentDiv.innerHTML = `<p class="error-message"><strong>Network/Client Error:</strong> ${error}. Check console.</p>`;
                 }
             }
 
             function formatDisplayName(name_stem, typePrefix) {
                 let displayName = name_stem
-                                    .replace("adv_", "")
-                                    .replace("ngram_", "")
-                                    .replace(/_/g, ' ')
+                                    .replace("adv_", "")      // Remove "adv_" prefix
+                                    .replace("ngram_", "")   // Remove "ngram_" prefix
+                                    .replace(/_/g, ' ')      // Replace underscores with spaces
                                     .replace('wordcloud', 'Word Cloud')
                                     .replace('tfidf', '(TF-IDF)')
                                     .replace('rawfreq', '(Raw Freq)')
-                                    .replace('cluster ', 'Cluster ')
+                                    .replace('cluster ', 'Cluster ') // Ensure space after Cluster
                                     .replace('category distribution', 'Category Distribution');
                 
                 // Capitalize first letter of each word
@@ -369,4 +345,16 @@ async def main_page_html():
 
 if __name__ == "__main__":
     print(f"--- [app.py] Starting Application ---")
+    # The following lines help debug Python's module search path when running locally.
+    # On Render, the environment setup might differ, but this is good for local checks.
+    print(f"[app.py] Current Working Directory: {os.getcwd()}")
+    print(f"[app.py] APP_ROOT_DIR (Directory of app.py): {APP_ROOT_DIR}")
+    print(f"[app.py] Python sys.path:")
+    for p in sys.path:
+        print(f"  - {p}")
+    
+    # Verify if the analysis files are detectable from APP_ROOT_DIR
+    print(f"[app.py] Checking for 'youtube_sentiment.py' in APP_ROOT_DIR: {os.path.exists(os.path.join(APP_ROOT_DIR, 'youtube_sentiment.py'))}")
+    print(f"[app.py] Checking for 'trend_analysis.py' in APP_ROOT_DIR: {os.path.exists(os.path.join(APP_ROOT_DIR, 'trend_analysis.py'))}")
+
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
