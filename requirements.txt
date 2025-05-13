@@ -13,3 +13,4 @@ seaborn
 textblob
 wordcloud
 scikit-learn
+networkx
